@@ -11,6 +11,8 @@ Shader "Unlit/Unlit"
         Tags { "RenderType"="Opaque" }
         LOD 100
         Blend SrcAlpha OneMinusSrcAlpha
+        Zwrite off
+        
 
         Pass
         {
