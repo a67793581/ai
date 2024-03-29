@@ -7,7 +7,9 @@ Shader "Unlit/Unlit"
         _MaskTex2("Mask2", 2D) = "white" {}
         _MaskTex3("Mask3", 2D) = "white" {}
         _MaskTex4("Mask4", 2D) = "white" {}
+        _MaskTex5("Mask5", 2D) = "white" {}
         [Toggle]_EnableAngry("Angry", Int) = 0
+        [Toggle]_EnableLove("Love", Int) = 0
     }
     SubShader
     {
@@ -35,7 +37,7 @@ Shader "Unlit/Unlit"
             {
                 float4 uv : TEXCOORD0;
                 float4 uv1 : TEXCOORD1;
-                float2 uv2 : TEXCOORD2;
+                float4 uv2 : TEXCOORD2;
                 float4 vertex : SV_POSITION;
             };
 
@@ -44,12 +46,15 @@ Shader "Unlit/Unlit"
             sampler2D _MaskTex2;
             sampler2D _MaskTex3;
             sampler2D _MaskTex4;
+            sampler2D _MaskTex5;
             float4 _MainTex_ST;
             float4 _MaskTex1_ST;
             float4 _MaskTex2_ST;
             float4 _MaskTex3_ST;
             float4 _MaskTex4_ST;
+            float4 _MaskTex5_ST;
             int _EnableAngry;
+            int _EnableLove;
 
             v2f vert (appdata v)
             {
@@ -60,6 +65,7 @@ Shader "Unlit/Unlit"
                 o.uv1.xy = TRANSFORM_TEX(v.uv, _MaskTex2);
                 o.uv1.zw = TRANSFORM_TEX(v.uv, _MaskTex3);
                 o.uv2.xy = TRANSFORM_TEX(v.uv, _MaskTex4);
+                o.uv2.zw = TRANSFORM_TEX(v.uv, _MaskTex5);
                 return o;
             }
 
@@ -70,10 +76,14 @@ Shader "Unlit/Unlit"
                 half mask2 = tex2D(_MaskTex2, i.uv1.xy).a;
                 half mask3 = tex2D(_MaskTex3, i.uv1.zw).a;
                 half mask4 = tex2D(_MaskTex4, i.uv2.xy).a;
+                half mask5 = tex2D(_MaskTex5, i.uv2.zw).a;
                 col.a *= mask1 - mask2;
 
                 if (_EnableAngry)
                     col.a *= mask3 - mask4;
+
+                if (_EnableLove)
+                    col.a *= mask5;
                 return col;
             }
             ENDCG

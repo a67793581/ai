@@ -39,7 +39,12 @@ Material:
         m_Texture: {fileID: 2800000, guid: 87e008b53158e44af9776715066f32e6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0.3, y: 0}
+    - _MaskTex5:
+        m_Texture: {fileID: 2800000, guid: ba26c6eeb36914474b62be73629be177, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: -0.5, y: -0.5}
     m_Floats:
     - _EnableAngry: 0
+    - _EnableLove: 0
     m_Colors: []
   m_BuildTextureStacks: []
