@@ -1,2 +1,15 @@
 【腾讯文档】ai 交流文档
 https://docs.qq.com/doc/DQ0JsWmtqSGFqYlhPai
+
+ai技术 
+
+文字配音 语音合成
+https://voxify.ai/proyect
+
+文生图
+Stable Diffusion
+https://github.com/AUTOMATIC1111/stable-diffusion-webui
+https://github.com/CompVis/stable-diffusion
+
+歌曲生成
+https://github.com/MoonInTheRiver/DiffSinger
