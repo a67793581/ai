@@ -5,6 +5,7 @@ Shader "Unlit/Unlit"
         _MainTex ("Texture", 2D) = "white" {}
         _MaskTex1("Mask1", 2D) = "white" {}
         _MaskTex2("Mask2", 2D) = "white" {}
+        _MaskTex3("Mask3", 2D) = "white" {}
     }
     SubShader
     {
