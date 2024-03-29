@@ -31,6 +31,15 @@ Material:
         m_Texture: {fileID: 2800000, guid: 01a7020e350dc4383ba97ded60a1d2e2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 1}
-    m_Floats: []
+    - _MaskTex3:
+        m_Texture: {fileID: 2800000, guid: 87e008b53158e44af9776715066f32e6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0.25, y: 0}
+    - _MaskTex4:
+        m_Texture: {fileID: 2800000, guid: 87e008b53158e44af9776715066f32e6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0.3, y: 0}
+    m_Floats:
+    - _EnableAngry: 0
     m_Colors: []
   m_BuildTextureStacks: []
