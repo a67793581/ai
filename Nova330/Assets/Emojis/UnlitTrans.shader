@@ -10,9 +10,13 @@ Shader "Unlit/Unlit"
         _MaskTex5("Mask5", 2D) = "white" {}
         _MaskTex6("Mask6", 2D) = "white" {}
         _MaskTex7("Mask7", 2D) = "white" {}
+        _MaskTex8("Mask8", 2D) = "white" {}
+        _SadTint("Sad Tint", Color) = (1,1,1,1)
+        _SadSpeed("Sad Speed", Float) = 1.0
         [Toggle]_EnableAngry("Angry", Int) = 0
         [Toggle]_EnableLove("Love", Int) = 0
         [Toggle]_EnableSleep("Sleep", Int) = 0
+        [Toggle]_EnableSad("Sad", Int) = 0
     }
     SubShader
     {
@@ -20,7 +24,6 @@ Shader "Unlit/Unlit"
         LOD 100
         Blend SrcAlpha OneMinusSrcAlpha
         Zwrite off
-        
 
         Pass
         {
@@ -42,6 +45,7 @@ Shader "Unlit/Unlit"
                 float4 uv1 : TEXCOORD1;
                 float4 uv2 : TEXCOORD2;
                 float4 uv3 : TEXCOORD3;
+                float2 uv4 : TEXCOORD4;
                 float4 vertex : SV_POSITION;
             };
 
@@ -53,6 +57,7 @@ Shader "Unlit/Unlit"
             sampler2D _MaskTex5;
             sampler2D _MaskTex6;
             sampler2D _MaskTex7;
+            sampler2D _MaskTex8;
             float4 _MainTex_ST;
             float4 _MaskTex1_ST;
             float4 _MaskTex2_ST;
@@ -61,9 +66,13 @@ Shader "Unlit/Unlit"
             float4 _MaskTex5_ST;
             float4 _MaskTex6_ST;
             float4 _MaskTex7_ST;
+            float4 _MaskTex8_ST;
+            half4 _SadTint;
+            float _SadSpeed;
             int _EnableAngry;
             int _EnableLove;
             int _EnableSleep;
+            int _EnableSad;
 
             v2f vert (appdata v)
             {
@@ -76,7 +85,8 @@ Shader "Unlit/Unlit"
                 o.uv2.xy = TRANSFORM_TEX(v.uv, _MaskTex4);
                 o.uv2.zw = TRANSFORM_TEX(v.uv, _MaskTex5);
                 o.uv3.xy = TRANSFORM_TEX(v.uv, _MaskTex6);
-                o.uv3.zw = TRANSFORM_TEX(v.uv, _MaskTex7);
+                o.uv3.zw = TRANSFORM_TEX(v.uv, _MaskTex7) + frac(float2(_SadSpeed * _Time.y, 0));
+                o.uv4.xy = TRANSFORM_TEX(v.uv, _MaskTex8);
                 return o;
             }
 
@@ -90,6 +100,7 @@ Shader "Unlit/Unlit"
                 half mask5 = tex2D(_MaskTex5, i.uv2.zw).a;
                 half mask6 = tex2D(_MaskTex6, i.uv3.xy).a;
                 half mask7 = tex2D(_MaskTex7, i.uv3.zw).a;
+                half mask8 = tex2D(_MaskTex8, i.uv4.xy).a;
                 col.a *= mask1 - mask2;
 
                 if (_EnableAngry)
@@ -100,6 +111,14 @@ Shader "Unlit/Unlit"
 
                 if (_EnableSleep)
                     col.a *= mask6;
+                    
+                if (_EnableSad)
+                {
+                    col.rgb = lerp(col.rgb, _SadTint, mask7);
+                    col.a *= (1 - mask8);
+                }
+
+                
                 return col;
             }
             ENDCG
