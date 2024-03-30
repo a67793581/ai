@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ShakeDetector : MonoBehaviour
 {
     public float shakeThreshold = 2.0f;
+    public UnityEvent unityEvent;
     private Vector3 _lastAcceleration;
 
     private void Start()
@@ -18,7 +20,8 @@ public class ShakeDetector : MonoBehaviour
         var deltaMagnitude = accelerationDelta.magnitude;
         if (deltaMagnitude > shakeThreshold)
         {
-            Debug.Log("Device shaken");
+            // Debug.Log("Device shaken");
+            unityEvent?.Invoke();
         }
     }
 }
