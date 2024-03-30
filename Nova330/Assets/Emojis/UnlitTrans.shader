@@ -15,6 +15,7 @@ Shader "Unlit/Unlit"
         _SadTint("Sad Tint", Color) = (1,1,1,1)
         _SadSpeed("Sad Speed", Float) = 1.0
         _RotateSpeed("Rotate Speed", Float) = 0.0
+        _OriginalTint("Original Tint", Color) = (1,1,1,1)
         [Toggle]_EnableAngry("Angry", Int) = 0
         [Toggle]_EnableLove("Love", Int) = 0
         [Toggle]_EnableSleep("Sleep", Int) = 0
@@ -73,6 +74,7 @@ Shader "Unlit/Unlit"
             float4 _MaskTex8_ST;
             float4 _MaskTex9_ST;
             half4 _SadTint;
+            half4 _OriginalTint;
             float _SadSpeed;
             float _RotateSpeed;
             int _EnableAngry;
@@ -107,7 +109,7 @@ Shader "Unlit/Unlit"
 
             float4 frag (v2f i) : SV_Target
             {
-                float4 col = tex2D(_MainTex, i.uv);
+                float4 col = tex2D(_MainTex, i.uv) * _OriginalTint;
                 half mask1 = tex2D(_MaskTex1, i.uv.zw).a;
                 half mask2 = tex2D(_MaskTex2, i.uv1.xy).a;
                 half mask3 = tex2D(_MaskTex3, i.uv1.zw).a;
