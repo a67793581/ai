@@ -1,4 +1,6 @@
-﻿namespace OpenCvSharp.Demo
+﻿using System.Reflection;
+
+namespace OpenCvSharp.Demo
 {
 	using System;
 	using UnityEngine;
@@ -8,12 +10,14 @@
 
 	public class FaceDetectorScene : WebCamera
 	{
+		public Transform emoji;
 		public TextAsset faces;
 		public TextAsset eyes;
 		public TextAsset shapes;
 
 		private FaceProcessorLive<WebCamTexture> processor;
-
+		public CascadeClassifier faceDetector;
+		private Vector3 currentVelocity = Vector3.zero;
 		/// <summary>
 		/// Default initializer for MonoBehavior sub-classes
 		/// </summary>
@@ -53,6 +57,12 @@
 			processor.Performance.SkipRate = 0;             // we actually process only each Nth frame (and every frame for skipRate = 0)
 		}
 
+		private void Start()
+		{
+			faceDetector = processor.GetType().GetField("cascadeFaces", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(processor) as CascadeClassifier;
+		}
+
+		private Vector3 curPosition;
 		/// <summary>
 		/// Per-frame video capture processor
 		/// </summary>
@@ -67,6 +77,15 @@
 			// processor.Image now holds data we'd like to visualize
 			output = Unity.MatToTexture(processor.Image, output);   // if output is valid texture it's buffer will be re-used, otherwise it will be re-created
 
+			foreach (var detectedFace in processor.Faces)
+			{
+				var location = new Vector2((detectedFace.Region.Center.X - output.width / 2f) / (output.width / 2f),
+					(output.height / 2f - detectedFace.Region.Center.Y) / (output.height / 2f));
+
+				location.y = Mathf.Clamp(location.y, -.1f, .1f);
+				emoji.localPosition = Vector3.SmoothDamp(curPosition, location, ref currentVelocity, 0.6f);
+				curPosition = emoji.localPosition;
+			}
 			return true;
 		}
 	}
