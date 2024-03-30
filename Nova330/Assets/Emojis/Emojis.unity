@@ -408,6 +408,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c52baaedb8b4e4a6bb39dcf59af084b0, type: 3}
   - {fileID: 8300000, guid: 66edac2c9eff0480e90801a6ef785b2e, type: 3}
   - {fileID: 8300000, guid: 14902b2a7981e416280e3515ff8e47d4, type: 3}
+  - {fileID: 8300000, guid: c734d103a514f4ff7bcd01f8103409d0, type: 3}
   index: 0
   aniL: {fileID: 1627234353}
   aniR: {fileID: 1627234352}
