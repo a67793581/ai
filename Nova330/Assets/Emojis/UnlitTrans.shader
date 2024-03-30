@@ -8,8 +8,11 @@ Shader "Unlit/Unlit"
         _MaskTex3("Mask3", 2D) = "white" {}
         _MaskTex4("Mask4", 2D) = "white" {}
         _MaskTex5("Mask5", 2D) = "white" {}
+        _MaskTex6("Mask6", 2D) = "white" {}
+        _MaskTex7("Mask7", 2D) = "white" {}
         [Toggle]_EnableAngry("Angry", Int) = 0
         [Toggle]_EnableLove("Love", Int) = 0
+        [Toggle]_EnableSleep("Sleep", Int) = 0
     }
     SubShader
     {
@@ -38,6 +41,7 @@ Shader "Unlit/Unlit"
                 float4 uv : TEXCOORD0;
                 float4 uv1 : TEXCOORD1;
                 float4 uv2 : TEXCOORD2;
+                float4 uv3 : TEXCOORD3;
                 float4 vertex : SV_POSITION;
             };
 
@@ -47,14 +51,19 @@ Shader "Unlit/Unlit"
             sampler2D _MaskTex3;
             sampler2D _MaskTex4;
             sampler2D _MaskTex5;
+            sampler2D _MaskTex6;
+            sampler2D _MaskTex7;
             float4 _MainTex_ST;
             float4 _MaskTex1_ST;
             float4 _MaskTex2_ST;
             float4 _MaskTex3_ST;
             float4 _MaskTex4_ST;
             float4 _MaskTex5_ST;
+            float4 _MaskTex6_ST;
+            float4 _MaskTex7_ST;
             int _EnableAngry;
             int _EnableLove;
+            int _EnableSleep;
 
             v2f vert (appdata v)
             {
@@ -66,6 +75,8 @@ Shader "Unlit/Unlit"
                 o.uv1.zw = TRANSFORM_TEX(v.uv, _MaskTex3);
                 o.uv2.xy = TRANSFORM_TEX(v.uv, _MaskTex4);
                 o.uv2.zw = TRANSFORM_TEX(v.uv, _MaskTex5);
+                o.uv3.xy = TRANSFORM_TEX(v.uv, _MaskTex6);
+                o.uv2.zw = TRANSFORM_TEX(v.uv, _MaskTex7);
                 return o;
             }
 
@@ -77,6 +88,8 @@ Shader "Unlit/Unlit"
                 half mask3 = tex2D(_MaskTex3, i.uv1.zw).a;
                 half mask4 = tex2D(_MaskTex4, i.uv2.xy).a;
                 half mask5 = tex2D(_MaskTex5, i.uv2.zw).a;
+                half mask6 = tex2D(_MaskTex6, i.uv3.xy).a;
+                half mask7 = tex2D(_MaskTex7, i.uv3.zw).a;
                 col.a *= mask1 - mask2;
 
                 if (_EnableAngry)
@@ -84,6 +97,9 @@ Shader "Unlit/Unlit"
 
                 if (_EnableLove)
                     col.a *= mask5;
+
+                if (_EnableSleep)
+                    col.a *= mask6;
                 return col;
             }
             ENDCG

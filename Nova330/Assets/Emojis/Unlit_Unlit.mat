@@ -43,8 +43,17 @@ Material:
         m_Texture: {fileID: 2800000, guid: ba26c6eeb36914474b62be73629be177, type: 3}
         m_Scale: {x: 2, y: 2}
         m_Offset: {x: -0.5, y: -0.5}
+    - _MaskTex6:
+        m_Texture: {fileID: 2800000, guid: ee84644b3c4c141ffa86ee4828f1ee4b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex7:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _EnableAngry: 0
     - _EnableLove: 0
+    - _EnableSleep: 0
     m_Colors: []
   m_BuildTextureStacks: []
