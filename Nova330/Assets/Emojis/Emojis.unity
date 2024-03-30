@@ -299,9 +299,9 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &1342800352 stripped
+--- !u!82 &1669446852 stripped
 AudioSource:
-  m_CorrespondingSourceObject: {fileID: 4312160003480092372, guid: 39927766680b441cc9fa715e69df17f1, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5154676772092209961, guid: 39927766680b441cc9fa715e69df17f1, type: 3}
   m_PrefabInstance: {fileID: 1214046613744405286}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &1714732656 stripped
@@ -350,7 +350,7 @@ MonoBehaviour:
   aniL: {fileID: 1714732656}
   aniR: {fileID: 1904274749}
   emotionState: EmotionState
-  ad: {fileID: 1342800352}
+  ad: {fileID: 1669446852}
   playSwitch: 0
 --- !u!4 &1729804458
 Transform:
