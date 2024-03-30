@@ -1,20 +1,19 @@
 ﻿using System.Reflection;
+using UnityEngine.Events;
 
 namespace OpenCvSharp.Demo
 {
-	using System;
 	using UnityEngine;
-	using System.Collections.Generic;
-	using UnityEngine.UI;
 	using OpenCvSharp;
 
 	public class FaceDetectorScene : WebCamera
 	{
-		public Transform emoji;
 		public TextAsset faces;
 		public TextAsset eyes;
 		public TextAsset shapes;
 
+		public UnityEvent<Vector3> unityEvent;
+		
 		private FaceProcessorLive<WebCamTexture> processor;
 		public CascadeClassifier faceDetector;
 		private Vector3 currentVelocity = Vector3.zero;
@@ -82,9 +81,12 @@ namespace OpenCvSharp.Demo
 				var location = new Vector2((detectedFace.Region.Center.X - output.width / 2f) / (output.width / 2f),
 					(output.height / 2f - detectedFace.Region.Center.Y) / (output.height / 2f));
 
-				location.y = Mathf.Clamp(location.y, -.1f, .1f);
-				emoji.localPosition = Vector3.SmoothDamp(curPosition, location, ref currentVelocity, 0.8f);
-				curPosition = emoji.localPosition;
+				location.x = Mathf.Clamp(location.x, -.2f, .2f);
+				location.y = Mathf.Clamp(location.y, -.05f, .05f);
+
+				var pos = Vector3.SmoothDamp(curPosition, location, ref currentVelocity, 1f);
+				curPosition = pos;
+				unityEvent?.Invoke(pos);
 			}
 			return true;
 		}
