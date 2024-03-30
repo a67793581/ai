@@ -11,12 +11,15 @@ Shader "Unlit/Unlit"
         _MaskTex6("Mask6", 2D) = "white" {}
         _MaskTex7("Mask7", 2D) = "white" {}
         _MaskTex8("Mask8", 2D) = "white" {}
+        _MaskTex9("Mask9", 2D) = "white" {}
         _SadTint("Sad Tint", Color) = (1,1,1,1)
         _SadSpeed("Sad Speed", Float) = 1.0
+        _RotateSpeed("Rotate Speed", Float) = 0.0
         [Toggle]_EnableAngry("Angry", Int) = 0
         [Toggle]_EnableLove("Love", Int) = 0
         [Toggle]_EnableSleep("Sleep", Int) = 0
         [Toggle]_EnableSad("Sad", Int) = 0
+        [Toggle]_EnableFaint("Faint", Int) = 0
     }
     SubShader
     {
@@ -45,7 +48,7 @@ Shader "Unlit/Unlit"
                 float4 uv1 : TEXCOORD1;
                 float4 uv2 : TEXCOORD2;
                 float4 uv3 : TEXCOORD3;
-                float2 uv4 : TEXCOORD4;
+                float4 uv4 : TEXCOORD4;
                 float4 vertex : SV_POSITION;
             };
 
@@ -58,6 +61,7 @@ Shader "Unlit/Unlit"
             sampler2D _MaskTex6;
             sampler2D _MaskTex7;
             sampler2D _MaskTex8;
+            sampler2D _MaskTex9;
             float4 _MainTex_ST;
             float4 _MaskTex1_ST;
             float4 _MaskTex2_ST;
@@ -67,12 +71,16 @@ Shader "Unlit/Unlit"
             float4 _MaskTex6_ST;
             float4 _MaskTex7_ST;
             float4 _MaskTex8_ST;
+            float4 _MaskTex9_ST;
             half4 _SadTint;
             float _SadSpeed;
+            float _RotateSpeed;
             int _EnableAngry;
             int _EnableLove;
             int _EnableSleep;
             int _EnableSad;
+            int _EnableFaint;
+
 
             v2f vert (appdata v)
             {
@@ -87,6 +95,13 @@ Shader "Unlit/Unlit"
                 o.uv3.xy = TRANSFORM_TEX(v.uv, _MaskTex6);
                 o.uv3.zw = TRANSFORM_TEX(v.uv, _MaskTex7) + frac(float2(_SadSpeed * _Time.y, 0));
                 o.uv4.xy = TRANSFORM_TEX(v.uv, _MaskTex8);
+                
+                float sinX = sin ( _RotateSpeed * _Time.y );
+                float cosX = cos ( _RotateSpeed * _Time.y );
+                float sinY = sin ( _RotateSpeed * _Time.y );
+                float2x2 rotationMatrix = float2x2( cosX, -sinX, sinY, cosX);
+                v.uv.xy = mul ( v.uv.xy - .5, rotationMatrix ) + .5;
+                o.uv4.zw = TRANSFORM_TEX(v.uv, _MaskTex9);
                 return o;
             }
 
@@ -101,6 +116,7 @@ Shader "Unlit/Unlit"
                 half mask6 = tex2D(_MaskTex6, i.uv3.xy).a;
                 half mask7 = tex2D(_MaskTex7, i.uv3.zw).a;
                 half mask8 = tex2D(_MaskTex8, i.uv4.xy).a;
+                half mask9 = tex2D(_MaskTex9, i.uv4.zw).a;
                 col.a *= mask1 - mask2;
 
                 if (_EnableAngry)
@@ -118,6 +134,10 @@ Shader "Unlit/Unlit"
                     col.a *= (1 - mask8);
                 }
 
+                if (_EnableFaint)
+                {
+                    col.a *= mask9;
+                }
                 
                 return col;
             }
