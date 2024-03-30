@@ -76,7 +76,7 @@ Shader "Unlit/Unlit"
                 o.uv2.xy = TRANSFORM_TEX(v.uv, _MaskTex4);
                 o.uv2.zw = TRANSFORM_TEX(v.uv, _MaskTex5);
                 o.uv3.xy = TRANSFORM_TEX(v.uv, _MaskTex6);
-                o.uv2.zw = TRANSFORM_TEX(v.uv, _MaskTex7);
+                o.uv3.zw = TRANSFORM_TEX(v.uv, _MaskTex7);
                 return o;
             }
 
