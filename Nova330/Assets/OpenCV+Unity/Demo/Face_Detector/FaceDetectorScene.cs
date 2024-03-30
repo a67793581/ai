@@ -83,7 +83,7 @@ namespace OpenCvSharp.Demo
 					(output.height / 2f - detectedFace.Region.Center.Y) / (output.height / 2f));
 
 				location.y = Mathf.Clamp(location.y, -.1f, .1f);
-				emoji.localPosition = Vector3.SmoothDamp(curPosition, location, ref currentVelocity, 0.6f);
+				emoji.localPosition = Vector3.SmoothDamp(curPosition, location, ref currentVelocity, 0.8f);
 				curPosition = emoji.localPosition;
 			}
 			return true;
